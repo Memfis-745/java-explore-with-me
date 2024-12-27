@@ -1,4 +1,5 @@
-FROM amazoncorretto:11-alpine-jdk
+FROM eclipse-temurin:21-jre-jammy
+WORKDIR /app
 COPY target/*.jar app.jar
-#ENV TZ="Europe/Moscow"
 ENTRYPOINT ["java","-jar","/app.jar"]
+# FROM amazoncorretto:11-alpine-jdk
