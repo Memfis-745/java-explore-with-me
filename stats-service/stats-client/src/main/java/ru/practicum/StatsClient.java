@@ -17,6 +17,7 @@ import java.util.List;
 public class StatsClient {
 
     private final String serverUrl = "http://stats-server:9090";
+
     private final RestTemplate restTemplate = new RestTemplate();
 /*
     public StatsClient(@Value("${stats-server.url}") String serverUrl) {
