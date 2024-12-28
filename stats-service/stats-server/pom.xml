@@ -9,12 +9,11 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <name>stats-server</name>
-    <description>stats-server</description>
-
     <groupId>ru.practicum</groupId>
     <artifactId>stats-server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <name>stats-server</name>
+    <description>stats-server</description>
     <packaging>jar</packaging>
 
     <properties>
@@ -95,14 +94,13 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
             <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-jar-plugin</artifactId>
-            <configuration>
-                <finalName>stats-server</finalName>
-            </configuration>
-        </plugin>
-
-    </plugins>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <finalName>stats-server</finalName>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 
 </project>
