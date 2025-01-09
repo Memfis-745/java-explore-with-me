@@ -9,7 +9,7 @@ import static ru.practicum.exceptions.Constants.DATE_FORMAT;
 @UtilityClass
 public class RequestMapper {
 
-    public ParticipationRequestDto RequestToDto(Request request) {
+    public ParticipationRequestDto requestToDto(Request request) {
         return new ParticipationRequestDto(
                 request.getId(),
                 request.getCreated() != null ? request.getCreated().format(DATE_FORMAT) : null,

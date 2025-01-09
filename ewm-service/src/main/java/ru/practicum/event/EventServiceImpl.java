@@ -115,7 +115,7 @@ public class EventServiceImpl implements EventService {
         checkEventInitiator(event, userId);
 
         return requestRepository.findAllByEventId(eventId).stream()
-                .map(RequestMapper::RequestToDto)
+                .map(RequestMapper::requestToDto)
                 .collect(Collectors.toList());
     }
 
@@ -332,9 +332,9 @@ public class EventServiceImpl implements EventService {
         List<Request> requestsList = requestRepository.findAllByEventId(eventId);
         for (Request request : requestsList) {
             if (request.getStatus().equals(Status.REJECTED)) {
-                rejectedRequests.add(RequestMapper.RequestToDto(request));
+                rejectedRequests.add(RequestMapper.requestToDto(request));
             } else if (request.getStatus().equals(Status.CONFIRMED)) {
-                confirmedRequests.add(RequestMapper.RequestToDto(request));
+                confirmedRequests.add(RequestMapper.requestToDto(request));
             }
         }
         return new RequestStatusResult(confirmedRequests, rejectedRequests);
@@ -384,11 +384,11 @@ public class EventServiceImpl implements EventService {
         }
 
         List<ParticipationRequestDto> confirmedRequests = confirmedRequestList.stream()
-                .map(RequestMapper::RequestToDto)
+                .map(RequestMapper::requestToDto)
                 .collect(Collectors.toList());
 
         List<ParticipationRequestDto> rejectedRequests = rejectRequestList.stream()
-                .map(RequestMapper::RequestToDto)
+                .map(RequestMapper::requestToDto)
                 .collect(Collectors.toList());
 
         return new RequestStatusResult(confirmedRequests, rejectedRequests);

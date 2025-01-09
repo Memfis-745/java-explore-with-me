@@ -32,7 +32,7 @@ public class RequestServiceImpl implements RequestService {
         checkUser(userId);
 
         return requestRepository.findAllByRequesterId(userId).stream()
-                .map(RequestMapper::RequestToDto)
+                .map(RequestMapper::requestToDto)
                 .collect(Collectors.toList());
     }
 
@@ -66,7 +66,7 @@ public class RequestServiceImpl implements RequestService {
             request.setStatus(Status.CONFIRMED);
         }
 
-        return RequestMapper.RequestToDto(requestRepository.save(request));
+        return RequestMapper.requestToDto(requestRepository.save(request));
     }
 
     @Override
@@ -79,7 +79,7 @@ public class RequestServiceImpl implements RequestService {
             throw new ConflictException("Запрос с ID: " + requestId + ", создан не пользователем ID: " + userId);
         }
         request.setStatus(Status.CANCELED);
-        return RequestMapper.RequestToDto(requestRepository.save(request));
+        return RequestMapper.requestToDto(requestRepository.save(request));
     }
 
     private void checkUser(Long userId) {
