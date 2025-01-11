@@ -1,6 +1,7 @@
 package ru.practicum.event;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -36,7 +37,7 @@ import java.util.stream.Collectors;
 import static java.util.Objects.isNull;
 import static ru.practicum.exceptions.Constants.APP_NAME;
 import static ru.practicum.exceptions.Constants.DATE_FORMAT;
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -198,19 +199,19 @@ public class EventServiceImpl implements EventService {
         }
         text = isNull(text) ? null : text.toLowerCase();
         List<Event> events = eventRepository.getPublicEventsWithFilter(state, text, paid, start, end);
-
+        log.info("Значение events на выходе из репозитория с параметрами = {}", events.get(0));
         List<EventShortDto> shortDtoList = mapEventsToShortDtos(events);
-
+        log.info("Значение eventsShortsDto на выходе из метода с параметрами = {}", shortDtoList.get(0));
         if (Sort.valueOf(params.getSort().toUpperCase()).equals(Sort.EVENT_DATE)) {
-            shortDtoList.stream()
+            shortDtoList = shortDtoList.stream()
                     .sorted(Comparator.comparing(EventShortDto::getEventDate))
                     .collect(Collectors.toList());
         } else {
-            shortDtoList.stream()
+            shortDtoList = shortDtoList.stream()
                     .sorted(Comparator.comparingLong(EventShortDto::getViews))
                     .collect(Collectors.toList());
         }
-
+        log.info("Значение eventsShortsDto нпосле сортировки = {}", shortDtoList.get(0));
         EndpointHitDto hitDto = new EndpointHitDto(null, APP_NAME, request.getRequestURI(), request.getRemoteAddr(),
                 LocalDateTime.now().format(DATE_FORMAT));
         statsClient.postHit(hitDto);
