@@ -38,7 +38,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             OR LOWER(event.annotation) LIKE %:text%)) AND (:paid IS NULL
             OR event.paid = :paid) AND (:rangeStart IS NULL
             OR event.eventDate >= :rangeStart) AND (:rangeEnd IS NULL
-            OR event.eventDate <= :rangeEnd) ORDER BY  event.eventDate"""
+            OR event.eventDate <= :rangeEnd) ORDER BY event.eventDate"""
     )
     List<Event> getPublicEventsWithFilter(
             @Param("state") State state,

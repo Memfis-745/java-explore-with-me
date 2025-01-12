@@ -24,7 +24,7 @@ public class PublicGetEventParams implements Params {
     private List<Long> categories;
     private Boolean paid;
 
-    @Pattern(regexp = DATE_TIME_PATTERN, message = "Формат даты и времени должен соответствовать виду: 'yyyy-MM-dd HH:mm:ss'")
+    @Pattern(regexp = DATE_TIME_PATTERN, message = "Формат даты и времени должен иметь вид: 'yyyy-MM-dd HH:mm:ss'")
     private String rangeStart;
 
     @Pattern(regexp = DATE_TIME_PATTERN, message = "Формат даты и времени должен соответствовать виду: 'yyyy-MM-dd HH:mm:ss'")

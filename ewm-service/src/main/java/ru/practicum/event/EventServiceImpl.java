@@ -277,13 +277,13 @@ public class EventServiceImpl implements EventService {
 
         List<EventFullDto> eventShortDtoList = new ArrayList<>();
         if (start.isPresent()) {
-            Map<Long, Long> veiws = getStatsForEvents(start.get(), eventsIds);
+            Map<Long, Long> views = getStatsForEvents(start.get(), eventsIds);
             Map<Long, Integer> eventsRequests = getEventRequests(Status.CONFIRMED, eventsIds);
             for (Event event : events) {
                 eventShortDtoList.add(
                         EventMapper.toFullDto(event,
                                 eventsRequests.getOrDefault(event.getId(), 0),
-                                veiws.getOrDefault(event.getId(), 0L))
+                                views.getOrDefault(event.getId(), 0L))
                 );
             }
         } else {
