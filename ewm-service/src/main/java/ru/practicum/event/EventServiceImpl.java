@@ -2,6 +2,7 @@ package ru.practicum.event;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -32,11 +33,13 @@ import ru.practicum.event.dto.*;
 
 import java.time.LocalDateTime;
 import java.util.*;
+
 import java.util.stream.Collectors;
 
 import static java.util.Objects.isNull;
 import static ru.practicum.exceptions.Constants.APP_NAME;
 import static ru.practicum.exceptions.Constants.DATE_FORMAT;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -194,13 +197,20 @@ public class EventServiceImpl implements EventService {
         Boolean paid = params.getPaid();
         State state = State.PUBLISHED;
 
+        log.info("Значение start и end  на входе в репозиторий  = {}, {}", start, end);
+        log.info("Значение start и end в timestamp на входе в репозиторий  = {}, {}", java.sql.Timestamp.valueOf(start),
+                java.sql.Timestamp.valueOf(end));
         if ((start != null) && (start.isAfter(end))) {
             throw new ConflictException("Дата окончания события не может быть раньше даты начала");
         }
         text = isNull(text) ? null : text.toLowerCase();
-        List<Event> events = eventRepository.getPublicEventsWithFilter(state, text, paid, start, end);
-        log.info("Значение events на выходе из репозитория с параметрами = {}", events.get(0));
-        List<EventShortDto> shortDtoList = mapEventsToShortDtos(events);
+        Pageable page = PageRequest.of(params.getFrom() / params.getSize(), params.getSize());
+        // List<Event> events = eventRepository.getPublicEventsWithFilter(state, text, paid, start, end);
+        Page<Event> events = eventRepository.getPublicEventsWithFilter(state, text, paid, start, end, page);
+
+        // log.info("Значение events на выходе из репозитория с параметрами = {}", events.get(0));
+        // List<EventShortDto> shortDtoList = mapEventsToShortDtos(events);
+        List<EventShortDto> shortDtoList = mapEventsToShortDtos(events.getContent());
         log.info("Значение eventsShortsDto на выходе из метода с параметрами = {}", shortDtoList.get(0));
         if (Sort.valueOf(params.getSort().toUpperCase()).equals(Sort.EVENT_DATE)) {
             shortDtoList = shortDtoList.stream()

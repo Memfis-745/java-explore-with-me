@@ -1,13 +1,15 @@
 package ru.practicum.event.model;
 
 import lombok.*;
+import org.hibernate.annotations.Type;
+import java.time.LocalDateTime;
+
 import ru.practicum.category.model.Category;
 import ru.practicum.event.State;
 import ru.practicum.location.model.Location;
 import ru.practicum.user.model.User;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -36,6 +38,7 @@ public class Event {
 
     @Column(name = "description", nullable = false, length = 7000)
     private String description;
+
 
     @Column(name = "event_date", nullable = false)
     private LocalDateTime eventDate;

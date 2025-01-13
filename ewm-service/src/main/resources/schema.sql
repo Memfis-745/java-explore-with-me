@@ -32,7 +32,7 @@ create table if not exists events
         constraint events_categories_id_fk
             references categories,
     description        varchar(7000) not null,
-    event_date         timestamp without time zone,
+    event_date         TIMESTAMP WITHOUT TIME ZONE,
     location_id        bigint        not null
         constraint events_locations_id_fk
             references locations,

@@ -1,5 +1,6 @@
 package ru.practicum.event;
 
+import org.hibernate.annotations.Type;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -32,7 +33,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             @Param("rangeEnd") LocalDateTime rangeEnd);
 
 
-    @Query("""
+   @Query("""
             select event FROM Event event WHERE event.state= :state
             AND (:text IS NULL OR (LOWER(event.description) LIKE %:text%
             OR LOWER(event.annotation) LIKE %:text%)) AND (:paid IS NULL
@@ -40,13 +41,18 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             OR event.eventDate >= :rangeStart) AND (:rangeEnd IS NULL
             OR event.eventDate <= :rangeEnd) ORDER BY event.eventDate"""
     )
-    List<Event> getPublicEventsWithFilter(
-            @Param("state") State state,
-            @Param("text") String text,
-            @Param("paid") Boolean paid,
-            @Param("rangeStart") LocalDateTime rangeStart,
-            @Param("rangeEnd") LocalDateTime rangeEnd);
+
+    //List<Event> getPublicEventsWithFilter(
+           Page<Event> getPublicEventsWithFilter(
+                   @Param("state") State state,
+                   @Param("text") String text,
+                   @Param("paid") Boolean paid,
+                  // @Type
+                   @Param("rangeStart") LocalDateTime rangeStart,
+                   @Param("rangeEnd") LocalDateTime rangeEnd, Pageable page);
+
 
     @Query("select min(e.publishedOn) from Event as e where e.id in ?1")
     Optional<LocalDateTime> getMinPublishedDate(List<Long> eventsId);
+
 }
