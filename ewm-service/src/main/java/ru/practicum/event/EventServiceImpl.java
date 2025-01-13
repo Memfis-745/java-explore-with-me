@@ -201,9 +201,7 @@ public class EventServiceImpl implements EventService {
 
         log.info("Значение start и end  на входе в репозиторий  = {}, {}", start, end);
 
-        if ((start.equals(null)) && (end.equals(null))) {
-            throw new NullPointerException("Время не задано");
-        }
+
         if ((start != null) && (start.isAfter(end))) {
             throw new ConflictException("Дата окончания события не может быть раньше даты начала");
         }
