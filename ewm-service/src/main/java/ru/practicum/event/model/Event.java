@@ -1,7 +1,6 @@
 package ru.practicum.event.model;
 
 import lombok.*;
-import org.hibernate.annotations.Type;
 import java.time.LocalDateTime;
 
 import ru.practicum.category.model.Category;
