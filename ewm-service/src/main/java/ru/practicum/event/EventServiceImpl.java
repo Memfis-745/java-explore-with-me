@@ -200,13 +200,19 @@ public class EventServiceImpl implements EventService {
         log.info("Значение start и end  на входе в репозиторий  = {}, {}", start, end);
         log.info("Значение start и end в timestamp на входе в репозиторий  = {}, {}", java.sql.Timestamp.valueOf(start),
                 java.sql.Timestamp.valueOf(end));
+        if ((start.equals(null)) && (end.equals(null))) {
+            throw new NullPointerException("Время не задано");
+        }
         if ((start != null) && (start.isAfter(end))) {
             throw new ConflictException("Дата окончания события не может быть раньше даты начала");
         }
         text = isNull(text) ? null : text.toLowerCase();
         Pageable page = PageRequest.of(params.getFrom() / params.getSize(), params.getSize());
         // List<Event> events = eventRepository.getPublicEventsWithFilter(state, text, paid, start, end);
+
+
         Page<Event> events = eventRepository.getPublicEventsWithFilter(state, text, paid, start, end, page);
+
 
         // log.info("Значение events на выходе из репозитория с параметрами = {}", events.get(0));
         // List<EventShortDto> shortDtoList = mapEventsToShortDtos(events);
