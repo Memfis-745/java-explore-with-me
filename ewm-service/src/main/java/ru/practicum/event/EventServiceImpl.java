@@ -221,7 +221,7 @@ public class EventServiceImpl implements EventService {
                     .sorted(Comparator.comparingLong(EventShortDto::getViews))
                     .collect(Collectors.toList());
         }
-        log.info("Значение eventsShortsDto нпосле сортировки = {}", shortDtoList.get(0));
+
         EndpointHitDto hitDto = new EndpointHitDto(null, APP_NAME, request.getRequestURI(), request.getRemoteAddr(),
                 LocalDateTime.now().format(DATE_FORMAT));
         statsClient.postHit(hitDto);
