@@ -200,8 +200,7 @@ public class EventServiceImpl implements EventService {
         State state = State.PUBLISHED;
 
         log.info("Значение start и end  на входе в репозиторий  = {}, {}", start, end);
-        log.info("Значение start и end в timestamp на входе в репозиторий  = {}, {}", java.sql.Timestamp.valueOf(start),
-                java.sql.Timestamp.valueOf(end));
+
         if ((start.equals(null)) && (end.equals(null))) {
             throw new NullPointerException("Время не задано");
         }
