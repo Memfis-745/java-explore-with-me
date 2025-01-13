@@ -211,7 +211,7 @@ public class EventServiceImpl implements EventService {
         Page<Event> events = eventRepository.getPublicEventsWithFilter(state, text, paid, start, end, page);
 
         List<EventShortDto> shortDtoList = mapEventsToShortDtos(events.getContent());
-        log.info("Значение eventsShortsDto на выходе из метода с параметрами = {}", shortDtoList.get(0));
+
         if (Sort.valueOf(params.getSort().toUpperCase()).equals(Sort.EVENT_DATE)) {
             shortDtoList = shortDtoList.stream()
                     .sorted(Comparator.comparing(EventShortDto::getEventDate))
