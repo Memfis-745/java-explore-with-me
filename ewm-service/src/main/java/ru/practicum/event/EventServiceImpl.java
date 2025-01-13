@@ -145,10 +145,12 @@ public class EventServiceImpl implements EventService {
         List<Long> categories = params.getCategories();
         List<Long> users = params.getUsers();
         List<String> states = params.getStates();
+        Pageable page = PageRequest.of(params.getFrom() / params.getSize(), params.getSize());
 
-        List<Event> events = eventRepository.getAllEventParams(users, states, categories, start, end);
+        Page<Event> events = eventRepository.getAllEventParams(users, states, categories, start, end, page);
 
-        return mapEventsToFullDtos(events);
+
+        return mapEventsToFullDtos(events.getContent());
     }
 
     @Transactional
@@ -208,14 +210,9 @@ public class EventServiceImpl implements EventService {
         }
         text = isNull(text) ? null : text.toLowerCase();
         Pageable page = PageRequest.of(params.getFrom() / params.getSize(), params.getSize());
-        // List<Event> events = eventRepository.getPublicEventsWithFilter(state, text, paid, start, end);
-
 
         Page<Event> events = eventRepository.getPublicEventsWithFilter(state, text, paid, start, end, page);
 
-
-        // log.info("Значение events на выходе из репозитория с параметрами = {}", events.get(0));
-        // List<EventShortDto> shortDtoList = mapEventsToShortDtos(events);
         List<EventShortDto> shortDtoList = mapEventsToShortDtos(events.getContent());
         log.info("Значение eventsShortsDto на выходе из метода с параметрами = {}", shortDtoList.get(0));
         if (Sort.valueOf(params.getSort().toUpperCase()).equals(Sort.EVENT_DATE)) {
