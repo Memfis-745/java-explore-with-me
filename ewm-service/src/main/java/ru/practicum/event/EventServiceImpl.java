@@ -149,8 +149,8 @@ public class EventServiceImpl implements EventService {
 
         Page<Event> events = eventRepository.getAllEventParams(users, states, categories, start, end, page);
 
-
-        return mapEventsToFullDtos(events.getContent());
+        return mapEventsToFullDtos(events.toList());
+        //return mapEventsToFullDtos(events.getContent());
     }
 
     @Transactional
@@ -210,8 +210,8 @@ public class EventServiceImpl implements EventService {
 
         Page<Event> events = eventRepository.getPublicEventsWithFilter(state, text, paid, start, end, page);
 
-        List<EventShortDto> shortDtoList = mapEventsToShortDtos(events.getContent());
-
+        List<EventShortDto> shortDtoList = mapEventsToShortDtos(events.toList());
+        //List<EventShortDto> shortDtoList = mapEventsToShortDtos(events.getContent());
         if (Sort.valueOf(params.getSort().toUpperCase()).equals(Sort.EVENT_DATE)) {
             shortDtoList = shortDtoList.stream()
                     .sorted(Comparator.comparing(EventShortDto::getEventDate))

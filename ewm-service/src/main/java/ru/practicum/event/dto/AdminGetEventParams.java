@@ -33,7 +33,7 @@ public class AdminGetEventParams implements Params {
     @PositiveOrZero(message = "Параметр from не может быть отрицательным")
     private int from = 0;
 
-    @Positive(message = "Параметр size не может быть отрицательным или ноль")
+    @Positive(message = "Параметр size не может быть отрицательным или нулем")
     private int size = 10;
 
     @Override
