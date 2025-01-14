@@ -149,8 +149,13 @@ public class EventServiceImpl implements EventService {
 
         Page<Event> events = eventRepository.getAllEventParams(users, states, categories, start, end, page);
 
-        return mapEventsToFullDtos(events.toList());
-        //return mapEventsToFullDtos(events.getContent());
+        List<EventFullDto> eventFullDtoList =  mapEventsToFullDtos(events.toList());
+        eventFullDtoList.stream()
+                .skip(params.getFrom())
+                .limit(params.getSize())
+                .toList();
+        return eventFullDtoList;
+
     }
 
     @Transactional
@@ -211,7 +216,6 @@ public class EventServiceImpl implements EventService {
         Page<Event> events = eventRepository.getPublicEventsWithFilter(state, text, paid, start, end, page);
 
         List<EventShortDto> shortDtoList = mapEventsToShortDtos(events.toList());
-        //List<EventShortDto> shortDtoList = mapEventsToShortDtos(events.getContent());
         if (Sort.valueOf(params.getSort().toUpperCase()).equals(Sort.EVENT_DATE)) {
             shortDtoList = shortDtoList.stream()
                     .sorted(Comparator.comparing(EventShortDto::getEventDate))
@@ -290,10 +294,9 @@ public class EventServiceImpl implements EventService {
             Map<Long, Long> views = getStatsForEvents(start.get(), eventsIds);
             Map<Long, Integer> eventsRequests = getEventRequests(Status.CONFIRMED, eventsIds);
             for (Event event : events) {
-                eventShortDtoList.add(
-                        EventMapper.toFullDto(event,
-                                eventsRequests.getOrDefault(event.getId(), 0),
-                                views.getOrDefault(event.getId(), 0L))
+                eventShortDtoList.add(EventMapper.toFullDto(event,
+                        eventsRequests.getOrDefault(event.getId(), 0),
+                        views.getOrDefault(event.getId(), 0L))
                 );
             }
         } else {
