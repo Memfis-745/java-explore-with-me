@@ -145,8 +145,9 @@ public class EventServiceImpl implements EventService {
         List<Long> categories = params.getCategories();
         List<Long> users = params.getUsers();
         List<String> states = params.getStates();
-        Pageable page = PageRequest.of(params.getFrom() / params.getSize(), params.getSize());
 
+        Pageable page = PageRequest.of(params.getFrom() / params.getSize(), params.getSize());
+        log.info("Значение from и ensized  на входе в репозиторий  = {}, {}", params.getFrom(), params.getSize());
         Page<Event> events = eventRepository.getAllEventParams(users, states, categories, start, end, page);
 
         List<EventFullDto> eventFullDtoList =  mapEventsToFullDtos(events.toList());

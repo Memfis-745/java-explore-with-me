@@ -19,7 +19,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping(path = "/events")
+@RequestMapping("/events")
 @RequiredArgsConstructor
 @Validated
 public class PublicEventController {
