@@ -20,8 +20,10 @@ import java.util.List;
 public class AdminEventController {
 
     private final EventService eventService;
+    private String query;
 
-    @GetMapping
+
+    @GetMapping("")
     public List<EventFullDto> getAllEvent(@Valid AdminGetEventParams params) {
         log.info("Админ-Запрос на получение отфильтрованных событий: params = {}", params);
         return eventService.getAdminAllEvent(params);
