@@ -152,7 +152,7 @@ public class EventServiceImpl implements EventService {
         List<Event> events = eventRepository.getAllEventParams(users, states, categories, start, end);
         log.info("Значение PageEvents в методе сервис импл  = {}", events);
         //List<EventFullDto> eventFullDtoList =  mapEventsToFullDtos(events.toList());
-        List<EventFullDto> eventFullDtoList =  mapEventsToFullDtos(events);
+        List<EventFullDto> eventFullDtoList = mapEventsToFullDtos(events);
         eventFullDtoList.stream()
                 .skip(params.getFrom())
                 .limit(params.getSize())
