@@ -148,8 +148,8 @@ public class EventServiceImpl implements EventService {
 
         List<Event> events = new ArrayList<>();
         Pageable page = PageRequest.of(params.getFrom() / params.getSize(), params.getSize());
-        if (users.equals(null) && states.equals(null)
-                && categories.equals(null) && start.equals(null) && end.equals(null)) {
+
+        if ((users == null) && (states == null) && (categories == null) && (start == null) && (end == null)) {
             events = eventRepository.findAll();
         } else {
             events = eventRepository.getAllEventParams(users, states, categories, start, end);
@@ -163,7 +163,7 @@ public class EventServiceImpl implements EventService {
         //Page<Event> events = eventRepository.getAllEventParams(users, states, categories, start, end, page);
 
         log.info("Отфильтрованных. СервисИмпл. Значение event в методе сервис импл  = {}", events);
-      //  log.info("Отфильтрованных. СервисИмпл. Значение eventAll в методе сервис импл  = {}", eventsAll);
+        //  log.info("Отфильтрованных. СервисИмпл. Значение eventAll в методе сервис импл  = {}", eventsAll);
 
 
         //List<EventFullDto> eventFullDtoList =  mapEventsToFullDtos(events.toList());
