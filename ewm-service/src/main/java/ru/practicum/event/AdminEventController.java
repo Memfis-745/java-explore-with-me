@@ -26,7 +26,10 @@ public class AdminEventController {
     @GetMapping("")
     public List<EventFullDto> getAllEvent(@Valid AdminGetEventParams params) {
         log.info("Админ-Запрос на получение отфильтрованных событий: params = {}", params);
-        return eventService.getAdminAllEvent(params);
+        List<EventFullDto> rturn = eventService.getAdminAllEvent(params);
+        log.info("Лист на выходе отфильтрованных событий: return = {}", rturn);
+        return rturn;
+        //return eventService.getAdminAllEvent(params);
     }
 
     @PatchMapping("/{eventId}")
