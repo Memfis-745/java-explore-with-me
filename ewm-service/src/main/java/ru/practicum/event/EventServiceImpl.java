@@ -147,19 +147,17 @@ public class EventServiceImpl implements EventService {
         List<String> states = params.getStates();
 
         Pageable page = PageRequest.of(params.getFrom() / params.getSize(), params.getSize());
-        //  List<Event> events = new ArrayList();
-        // if (users.equals(null) && categories.equals(null) && states.equals(null)) {
-        //    events = eventRepository.findAll();
-        //  } else {
-        List<Event> events = eventRepository.getAllEventParams(users, states, categories, start, end);
-        List<Event> eventAll = eventRepository.getAllEventParamsq();
-        // }
 
-        log.info("Значение from и ensized  на входе в репозиторий  = {}, {}", params.getFrom(), params.getSize());
+        List<Event> events = eventRepository.getAllEventParams(users, states, categories, start, end);
+        List<Event> eventsAll = eventRepository.findAll();
+
+
+        log.info("Отфильтрованных. Значение from и ensized  на входе в репозиторий  = {}, {}", params.getFrom(), params.getSize());
         //Page<Event> events = eventRepository.getAllEventParams(users, states, categories, start, end, page);
 
-        log.info("Значение PageEvents//Лист в методе сервис импл  = {}", events);
-        log.info("Значение PageEvents//Лист в методе сервис импл  = {}", eventAll);
+        log.info("Отфильтрованныхю Значение Лист в методе сервис импл  = {}", events);
+        log.info("Отфильтрованныхю Значение Лист в методе сервис импл  = {}", eventsAll);
+
 
         //List<EventFullDto> eventFullDtoList =  mapEventsToFullDtos(events.toList());
         List<EventFullDto> eventFullDtoList = mapEventsToFullDtos(events);

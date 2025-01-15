@@ -42,12 +42,6 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             @Param("rangeEnd") LocalDateTime rangeEnd);
 
     @Query("""
-            select event FROM Event event)"""
-    )
-    List<Event> getAllEventParamsq();
-
-
-    @Query("""
             select event FROM Event event WHERE event.state= :state
             AND (:text IS NULL OR (LOWER(event.description) LIKE %:text%
             OR LOWER(event.annotation) LIKE %:text%)) AND (:paid IS NULL
