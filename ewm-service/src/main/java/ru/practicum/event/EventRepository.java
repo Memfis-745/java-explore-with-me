@@ -24,17 +24,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             AND (event.eventDate <= :rangeEnd)"""
     )
 
-    /*@Query("""
-            select event FROM Event event WHERE (:users IS NULL
-            OR event.initiator.id IN :users) AND (:states IS NULL
-            OR SIZE(:states) = 0 OR event.state IN :states)
-            AND (:categories IS NULL OR SIZE(:categories) = 0
-            OR event.category.id IN :categories)
-            AND (event.eventDate >= :rangeStart)
-            AND (event.eventDate <= :rangeEnd)"""
-    )
 
-     */
    /* Page<Event> getAllEventParams(
             @Param("users") List<Long> users,
             @Param("states") List<String> states,
@@ -50,6 +40,12 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             @Param("categories") List<Long> categories,
             @Param("rangeStart") LocalDateTime rangeStart,
             @Param("rangeEnd") LocalDateTime rangeEnd);
+
+    @Query("""
+            select event FROM Event event)"""
+    )
+    List<Event> getAllEventParams();
+
 
     @Query("""
             select event FROM Event event WHERE event.state= :state
