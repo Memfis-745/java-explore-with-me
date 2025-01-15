@@ -152,7 +152,7 @@ public class EventServiceImpl implements EventService {
         //    events = eventRepository.findAll();
         //  } else {
         List<Event> events = eventRepository.getAllEventParams(users, states, categories, start, end);
-        List<Event> eventAll = eventRepository.getAllEventParams();
+        List<Event> eventAll = eventRepository.getAllEventParamsq();
         // }
 
         log.info("Значение from и ensized  на входе в репозиторий  = {}, {}", params.getFrom(), params.getSize());
