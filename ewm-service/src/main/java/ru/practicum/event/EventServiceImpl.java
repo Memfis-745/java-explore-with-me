@@ -150,7 +150,9 @@ public class EventServiceImpl implements EventService {
         log.info("Значение from и ensized  на входе в репозиторий  = {}, {}", params.getFrom(), params.getSize());
         //Page<Event> events = eventRepository.getAllEventParams(users, states, categories, start, end, page);
         List<Event> events = eventRepository.getAllEventParams(users, states, categories, start, end);
-        log.info("Значение PageEvents в методе сервис импл  = {}", events);
+        log.info("Значение PageEvents//Лист в методе сервис импл  = {}", events);
+        List<Event> eventAll = eventRepository.findAll();
+        log.info("Значение эвентол в методе сервис импл  = {}", eventAll);
         //List<EventFullDto> eventFullDtoList =  mapEventsToFullDtos(events.toList());
         List<EventFullDto> eventFullDtoList = mapEventsToFullDtos(events);
         eventFullDtoList.stream()
