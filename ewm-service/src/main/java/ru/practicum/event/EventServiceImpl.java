@@ -149,11 +149,11 @@ public class EventServiceImpl implements EventService {
         List<Event> events = new ArrayList<>();
         Pageable page = PageRequest.of(params.getFrom() / params.getSize(), params.getSize());
 
-       // if ((users == null) && (states == null) && (categories == null) && (start == null) && (end == null)) {
-        //    events = eventRepository.findAll();
-        //} else {
+        if ((users == null) && (states == null) && (categories == null) && (start == null) && (end == null)) {
+            events = eventRepository.findAll();
+        } else {
             events = eventRepository.getAllEventParams(users, states, categories, start, end);
-       // }
+        }
 
         // List<Event> events = eventRepository.getAllEventParams(users, states, categories, start, end);
         //  List<Event> eventsAll = eventRepository.findAll();
