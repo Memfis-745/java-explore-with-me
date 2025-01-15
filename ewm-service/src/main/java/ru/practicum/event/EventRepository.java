@@ -16,11 +16,22 @@ import java.util.Optional;
 public interface EventRepository extends JpaRepository<Event, Long> {
     Page<Event> findAllByInitiatorId(Long userId, Pageable page);
 
+    /*  @Query("""
+              select event FROM Event event WHERE (:users IS NULL
+              OR event.initiator.id IN :users) AND (:states IS NULL
+              OR event.state IN :states) AND (:categories IS NULL
+              OR event.category.id IN :categories) AND (event.eventDate >= :rangeStart)
+              AND (event.eventDate <= :rangeEnd)"""
+      )
+
+     */
     @Query("""
             select event FROM Event event WHERE (:users IS NULL
             OR event.initiator.id IN :users) AND (:states IS NULL
-            OR event.state IN :states) AND (:categories IS NULL
-            OR event.category.id IN :categories) AND (event.eventDate >= :rangeStart)
+            OR :states IS EMPTY OR event.state IN :states)
+            AND (:categories IS NULL OR :categories IS EMPTY
+            OR event.category.id IN :categories)
+            AND (event.eventDate >= :rangeStart)
             AND (event.eventDate <= :rangeEnd)"""
     )
    /* Page<Event> getAllEventParams(
@@ -31,6 +42,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             @Param("rangeEnd") LocalDateTime rangeEnd, Pageable page);
 
     */
+
     List<Event> getAllEventParams(
             @Param("users") List<Long> users,
             @Param("states") List<String> states,
