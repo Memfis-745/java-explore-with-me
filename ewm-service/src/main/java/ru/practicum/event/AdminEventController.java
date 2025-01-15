@@ -20,14 +20,13 @@ import java.util.List;
 public class AdminEventController {
 
     private final EventService eventService;
-    private String query;
 
 
     @GetMapping("")
     public List<EventFullDto> getAllEvent(@Valid AdminGetEventParams params) {
         log.info("Админ-Запрос на получение отфильтрованных событий: params = {}", params);
         List<EventFullDto> rturn = eventService.getAdminAllEvent(params);
-        log.info("Лист на выходе отфильтрованных событий: return = {}", rturn);
+        log.info("Отфильтрованных. Контроллер. Events на выходе из контроллера = {}", rturn);
         return rturn;
         //return eventService.getAdminAllEvent(params);
     }

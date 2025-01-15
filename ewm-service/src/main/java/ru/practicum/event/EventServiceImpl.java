@@ -152,11 +152,11 @@ public class EventServiceImpl implements EventService {
         List<Event> eventsAll = eventRepository.findAll();
 
 
-        log.info("Отфильтрованных. Значение from и ensized  на входе в репозиторий  = {}, {}", params.getFrom(), params.getSize());
+        log.info("Отфильтрованных. СервисИмпл. Значение from и ensized  на входе в репозиторий  = {}, {}", params.getFrom(), params.getSize());
         //Page<Event> events = eventRepository.getAllEventParams(users, states, categories, start, end, page);
 
-        log.info("Отфильтрованныхю Значение Лист в методе сервис импл  = {}", events);
-        log.info("Отфильтрованныхю Значение Лист в методе сервис импл  = {}", eventsAll);
+        log.info("Отфильтрованных. СервисИмпл. Значение event в методе сервис импл  = {}", events);
+        log.info("Отфильтрованных. СервисИмпл. Значение eventAll в методе сервис импл  = {}", eventsAll);
 
 
         //List<EventFullDto> eventFullDtoList =  mapEventsToFullDtos(events.toList());
@@ -165,7 +165,7 @@ public class EventServiceImpl implements EventService {
                 .skip(params.getFrom())
                 .limit(params.getSize())
                 .toList();
-        log.info("Значение eventFullDtoList в методе сервис импл  = {}", eventFullDtoList);
+        log.info("Отфильтрованных. СервисИмпл. Значение eventFullDtoList в методе сервис импл  = {}", eventFullDtoList);
         return eventFullDtoList;
 
     }
