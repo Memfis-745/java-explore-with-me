@@ -23,13 +23,12 @@ public interface EventRepository extends JpaRepository<Event, Long> {
               OR event.category.id IN :categories) AND (event.eventDate >= :rangeStart)
               AND (event.eventDate <= :rangeEnd)"""
       )
-
      */
     @Query("""
             select event FROM Event event WHERE (:users IS NULL
             OR event.initiator.id IN :users) AND (:states IS NULL
-            OR :states IS EMPTY OR event.state IN :states)
-            AND (:categories IS NULL OR :categories IS EMPTY
+            OR SIZE(:states) = 0 OR event.state IN :states)
+            AND (:categories IS NULL OR SIZE(:categories) = 0
             OR event.category.id IN :categories)
             AND (event.eventDate >= :rangeStart)
             AND (event.eventDate <= :rangeEnd)"""
