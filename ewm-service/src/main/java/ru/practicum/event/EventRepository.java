@@ -23,13 +23,20 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             OR event.category.id IN :categories) AND (event.eventDate >= :rangeStart)
             AND (event.eventDate <= :rangeEnd)"""
 )
-    Page<Event> getAllEventParams(
+   /* Page<Event> getAllEventParams(
             @Param("users") List<Long> users,
             @Param("states") List<String> states,
             @Param("categories") List<Long> categories,
             @Param("rangeStart") LocalDateTime rangeStart,
             @Param("rangeEnd") LocalDateTime rangeEnd, Pageable page);
 
+    */
+    List<Event> getAllEventParams(
+            @Param("users") List<Long> users,
+            @Param("states") List<String> states,
+            @Param("categories") List<Long> categories,
+            @Param("rangeStart") LocalDateTime rangeStart,
+            @Param("rangeEnd") LocalDateTime rangeEnd);
    @Query("""
             select event FROM Event event WHERE event.state= :state
             AND (:text IS NULL OR (LOWER(event.description) LIKE %:text%
