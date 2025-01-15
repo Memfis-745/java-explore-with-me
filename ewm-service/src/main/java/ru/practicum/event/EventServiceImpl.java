@@ -283,13 +283,13 @@ public class EventServiceImpl implements EventService {
 
         List<EventShortDto> eventShortDtoList = new ArrayList<>();
         if (start.isPresent()) {
-            Map<Long, Long> veiws = getStatsForEvents(start.get(), eventsIds);
+            Map<Long, Long> views = getStatsForEvents(start.get(), eventsIds);
             Map<Long, Integer> eventsRequests = getEventRequests(Status.CONFIRMED, eventsIds);
             for (Event event : events) {
                 eventShortDtoList.add(
                         EventMapper.toShortDto(event,
                                 eventsRequests.getOrDefault(event.getId(), 0),
-                                veiws.getOrDefault(event.getId(), 0L),
+                                views.getOrDefault(event.getId(), 0L),
                                 null)
                 );
             }
@@ -307,22 +307,26 @@ public class EventServiceImpl implements EventService {
         List<Long> eventsIds = events.stream()
                 .map(Event::getId)
                 .collect(Collectors.toList());
-
+        log.info("Отфильтрованных. метод фулл евентс. Значение eventsIds  = {}", eventsIds);
         Optional<LocalDateTime> start = eventRepository.getMinPublishedDate(eventsIds);
 
         List<EventFullDto> eventShortDtoList = new ArrayList<>();
         if (start.isPresent()) {
             Map<Long, Long> views = getStatsForEvents(start.get(), eventsIds);
+            log.info("Отфильтрованных. метод фулл евентс. Значение просмотры  = {}", eventsIds);
             Map<Long, Integer> eventsRequests = getEventRequests(Status.CONFIRMED, eventsIds);
+            log.info("Отфильтрованных. метод фулл евентс. реквест  = {}", eventsIds);
             for (Event event : events) {
                 eventShortDtoList.add(EventMapper.toFullDto(event,
                         eventsRequests.getOrDefault(event.getId(), 0),
                         views.getOrDefault(event.getId(), 0L))
                 );
+                log.info("Отфильтрованных. метод фулл евентс. создание с просмотрами  = {}", eventsIds);
             }
         } else {
             for (Event event : events) {
                 eventShortDtoList.add(EventMapper.toFullDto(event, 0, 0L));
+                log.info("Отфильтрованных. метод фулл евентс. создание без просмотров   = {}", eventsIds);
             }
         }
 
@@ -335,11 +339,11 @@ public class EventServiceImpl implements EventService {
                 .map(id -> "/events/" + id)
                 .collect(Collectors.toList());
 
-        List<ViewStatsDto> veiwStatsDtoList = statsClient.getStats(start, LocalDateTime.now(), uries, true);
+        List<ViewStatsDto> viewStatsDtoList = statsClient.getStats(start, LocalDateTime.now(), uries, true);
 
         Map<Long, Long> veiws = new HashMap<>();
 
-        for (ViewStatsDto veiwStatsDto : veiwStatsDtoList) {
+        for (ViewStatsDto veiwStatsDto : viewStatsDtoList) {
             String uri = veiwStatsDto.getUri();
             Long eventId = Long.parseLong(uri.substring(uri.lastIndexOf("/") + 1));
             veiws.put(eventId, veiwStatsDto.getHits());

@@ -53,7 +53,7 @@ public class EventMapper {
                 .build();
     }
 
-    public EventFullDto toFullDto(Event event, Integer confirmedRequests, Long veiws) {
+    public EventFullDto toFullDto(Event event, Integer confirmedRequests, Long views) {
         return EventFullDto.builder()
                 .id(event.getId())
                 .annotation(event.getAnnotation())
@@ -70,7 +70,7 @@ public class EventMapper {
                 .requestModeration(event.getRequestModeration())
                 .state(event.getState().name())
                 .title((event.getTitle()))
-                .views(veiws)
+                .views(views)
                 .build();
     }
 
