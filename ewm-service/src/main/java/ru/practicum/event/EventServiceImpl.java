@@ -313,15 +313,15 @@ public class EventServiceImpl implements EventService {
         List<EventFullDto> eventShortDtoList = new ArrayList<>();
         if (start.isPresent()) {
             Map<Long, Long> views = getStatsForEvents(start.get(), eventsIds);
-            log.info("Отфильтров. метод фулл евентс. Значение просмотры  = {}", eventsIds);
+            log.info("Отфильтрованных. метод фулл евентс. Значение просмотры  = {}", eventsIds);
             Map<Long, Integer> eventsRequests = getEventRequests(Status.CONFIRMED, eventsIds);
-            log.info("Отфильтров. метод фулл евентс. реквест  = {}", eventsIds);
+            log.info("Отфильтрованных. метод фулл евентс. реквест  = {}", eventsIds);
             for (Event event : events) {
                 eventShortDtoList.add(EventMapper.toFullDto(event,
                         eventsRequests.getOrDefault(event.getId(), 0),
                         views.getOrDefault(event.getId(), 0L))
                 );
-              //  log.info("Отфильтрованных. метод фулл евентс. создание с просмотрами  = {}", eventsIds);
+                log.info("Отфильтрованных. метод фулл евентс. создание с просмотрами  = {}", eventsIds);
             }
         } else {
             for (Event event : events) {
@@ -329,7 +329,7 @@ public class EventServiceImpl implements EventService {
                 log.info("Отфильтрованных. метод фулл евентс. создание без просмотров   = {}", eventsIds);
             }
         }
-        log.info("Отфильтров. метод фулл евентс. eventShortDtoList на выходе = {}", eventShortDtoList);
+
         return eventShortDtoList;
     }
 
