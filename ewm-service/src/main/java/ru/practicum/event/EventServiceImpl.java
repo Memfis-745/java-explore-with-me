@@ -316,14 +316,24 @@ public class EventServiceImpl implements EventService {
             log.info("Отфильтрованных. метод фулл евентс. Значение просмотры  = {}", views);
             Map<Long, Integer> eventsRequests = getEventRequests(Status.CONFIRMED, eventsIds);
             log.info("Отфильтрованных. метод фулл евентс. реквест  = {}", eventsRequests);
+
             for (Event event : events) {
+                 EventFullDto eventFullDto = EventMapper.toFullDto(event,
+                        eventsRequests.getOrDefault(event.getId(), 0),
+                        views.getOrDefault(event.getId(), 0L));
+                eventShortDtoList.add(eventFullDto);
+
+                 /*
                 eventShortDtoList.add(EventMapper.toFullDto(event,
                         eventsRequests.getOrDefault(event.getId(), 0),
                         views.getOrDefault(event.getId(), 0L))
                 );
-              //  log.info("Отфильтрованных. метод фулл евентс. event  = {}", event);
-               // log.info("Отфильтрованных. метод фулл евентс. eventsRequests  = {}", eventsRequests.getOrDefault(event.getId(), 0));
-               // log.info("Отфильтрованных. метод фулл евентс. views  = {}", views.getOrDefault(event.getId(), 0L));
+
+                  */
+                log.info("Отфильтрованных. метод фулл евентс. event  = {}", eventFullDto);
+               //log.info("Отфильтрованных. метод фулл евентс. event  = {}", event);
+              // log.info("Отфильтрованных. метод фулл евентс. eventsRequests  = {}", eventsRequests.getOrDefault(event.getId(), 0));
+               //log.info("Отфильтрованных. метод фулл евентс. views  = {}", views.getOrDefault(event.getId(), 0L));
             }
         } else {
             for (Event event : events) {
