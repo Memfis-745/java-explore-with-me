@@ -321,7 +321,7 @@ public class EventServiceImpl implements EventService {
                         eventsRequests.getOrDefault(event.getId(), 0),
                         views.getOrDefault(event.getId(), 0L))
                 );
-                log.info("Отфильтрованных. метод фулл евентс. создание с просмотрами  = {}", eventsIds);
+                log.info("Отфильтрованных. метод фулл евентс. создание с просмотрами  = {}", event);
             }
         } else {
             for (Event event : events) {
@@ -329,6 +329,7 @@ public class EventServiceImpl implements EventService {
                 log.info("Отфильтрованных. метод фулл евентс. создание без просмотров   = {}", eventsIds);
             }
         }
+        log.info("Отфильтрованных. метод фулл евентс. eventShortDtoList  = {}", eventShortDtoList);
 
         return eventShortDtoList;
     }
