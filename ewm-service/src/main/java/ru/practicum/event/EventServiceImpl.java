@@ -321,7 +321,9 @@ public class EventServiceImpl implements EventService {
                         eventsRequests.getOrDefault(event.getId(), 0),
                         views.getOrDefault(event.getId(), 0L))
                 );
-                log.info("Отфильтрованных. метод фулл евентс. создание с просмотрами  = {}", event);
+                log.info("Отфильтрованных. метод фулл евентс. event  = {}", event);
+                log.info("Отфильтрованных. метод фулл евентс. eventsRequests  = {}", eventsRequests.getOrDefault(event.getId(), 0));
+                log.info("Отфильтрованных. метод фулл евентс. views  = {}", views.getOrDefault(event.getId(), 0L));
             }
         } else {
             for (Event event : events) {
