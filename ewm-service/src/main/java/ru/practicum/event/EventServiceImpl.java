@@ -168,12 +168,12 @@ public class EventServiceImpl implements EventService {
 
         //List<EventFullDto> eventFullDtoList =  mapEventsToFullDtos(events.toList());
         List<EventFullDto> eventFullDtoList = mapEventsToFullDtos(events);
-       /* eventFullDtoList.stream()
+        eventFullDtoList.stream()
                 .skip(params.getFrom())
                 .limit(params.getSize())
                 .toList();
 
-        */
+
         log.info("Отфильтрованных. СервисИмпл. Значение eventFullDtoList в методе сервис импл  = {}", eventFullDtoList);
         return eventFullDtoList;
 
@@ -318,31 +318,22 @@ public class EventServiceImpl implements EventService {
             log.info("Отфильтрованных. метод фулл евентс. реквест  = {}", eventsRequests);
 
             for (Event event : events) {
-                 EventFullDto eventFullDto = EventMapper.toFullDto(event,
-                        eventsRequests.getOrDefault(event.getId(), 0),
-                        views.getOrDefault(event.getId(), 0L));
-                eventShortDtoList.add(eventFullDto);
 
-                 /*
                 eventShortDtoList.add(EventMapper.toFullDto(event,
                         eventsRequests.getOrDefault(event.getId(), 0),
                         views.getOrDefault(event.getId(), 0L))
                 );
 
-                  */
-                log.info("Отфильтрованных. метод фулл евентс. event  = {}", eventFullDto);
-               //log.info("Отфильтрованных. метод фулл евентс. event  = {}", event);
-              // log.info("Отфильтрованных. метод фулл евентс. eventsRequests  = {}", eventsRequests.getOrDefault(event.getId(), 0));
-               //log.info("Отфильтрованных. метод фулл евентс. views  = {}", views.getOrDefault(event.getId(), 0L));
+
             }
         } else {
             for (Event event : events) {
                 eventShortDtoList.add(EventMapper.toFullDto(event, 0, 0L));
-                log.info("Отфильтрованных. метод фулл евентс. создание без просмотров   = {}", eventsIds);
+
             }
         }
         log.info("Отфильтрованных. метод фулл евентс. eventShortDtoList размер  = {}", eventShortDtoList.size());
-        log.info("Отфильтрованных. метод фулл евентс. eventShortDtoList  = {}", eventShortDtoList);
+
 
         return eventShortDtoList;
     }
