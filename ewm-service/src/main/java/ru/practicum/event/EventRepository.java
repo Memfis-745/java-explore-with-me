@@ -67,6 +67,18 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             @Param("rangeStart") LocalDateTime rangeStart,
             @Param("rangeEnd") LocalDateTime rangeEnd, Pageable page);
 
+    @Query("""
+            select event FROM Event event WHERE event.state= :state
+            AND (:text IS NULL OR (LOWER(event.description) LIKE %:text%
+            OR LOWER(event.annotation) LIKE %:text%)) AND (:paid IS NULL
+            OR event.paid = :paid) AND (event.eventDate >= :rangeStart)
+            ORDER BY event.eventDate"""
+    )
+    Page<Event> getPublicEventsWithDateNull(
+            @Param("state") State state,
+            @Param("text") String text,
+            @Param("paid") Boolean paid,
+            @Param("rangeStart") LocalDateTime rangeStart, Pageable page);
 
     @Query("select min(e.publishedOn) from Event as e where e.id in ?1")
     Optional<LocalDateTime> getMinPublishedDate(List<Long> eventsId);

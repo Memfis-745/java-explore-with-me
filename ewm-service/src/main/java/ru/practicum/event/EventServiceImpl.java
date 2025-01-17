@@ -146,7 +146,6 @@ public class EventServiceImpl implements EventService {
         List<Long> users = params.getUsers();
         List<String> states = params.getStates();
 
-        // List<Event> events = new ArrayList<>();
         Pageable page = PageRequest.of(params.getFrom() / params.getSize(), params.getSize());
         Page<Event> events;
 
@@ -239,10 +238,25 @@ public class EventServiceImpl implements EventService {
         }
         text = isNull(text) ? null : text.toLowerCase();
         Pageable page = PageRequest.of(params.getFrom() / params.getSize(), params.getSize());
+        Page events;
+        if ((start == null) && (end == null)) {
+            start = LocalDateTime.now();
+            events = eventRepository.getPublicEventsWithDateNull(state, text, paid, start, page);
+        } else {
+            events = eventRepository.getPublicEventsWithFilter(state, text, paid, start, end, page);
+        }
 
-        Page<Event> events = eventRepository.getPublicEventsWithFilter(state, text, paid, start, end, page);
+
+        log.info("Отфильтрованных. public. Значение event после репозитория = {}", events.getContent());
+
+        // Page<Event> events = eventRepository.getPublicEventsWithFilter(state, text, paid, start, end, page);
 
         List<EventShortDto> shortDtoList = mapEventsToShortDtos(events.toList());
+
+        for (EventShortDto e : shortDtoList) {
+            log.info("Отфильтрованных. СервисИмпл. Значение eventFullDtoList  = {}", e);
+        }
+
         if (Sort.valueOf(params.getSort().toUpperCase()).equals(Sort.EVENT_DATE)) {
             shortDtoList = shortDtoList.stream()
                     .sorted(Comparator.comparing(EventShortDto::getEventDate))
@@ -251,6 +265,10 @@ public class EventServiceImpl implements EventService {
             shortDtoList = shortDtoList.stream()
                     .sorted(Comparator.comparingLong(EventShortDto::getViews))
                     .collect(Collectors.toList());
+        }
+
+        for (EventShortDto e : shortDtoList) {
+            log.info("Отфильтрованных. СервисИмпл. Значение eventFullDtoList  = {}", e);
         }
 
         EndpointHitDto hitDto = new EndpointHitDto(null, APP_NAME, request.getRequestURI(), request.getRemoteAddr(),
