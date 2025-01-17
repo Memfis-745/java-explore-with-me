@@ -341,6 +341,7 @@ public class EventServiceImpl implements EventService {
                 log.info("Отфильтрованных. метод фулл евентс. создание без просмотров   = {}", eventsIds);
             }
         }
+        log.info("Отфильтрованных. метод фулл евентс. eventShortDtoList размер  = {}", eventShortDtoList.size());
         log.info("Отфильтрованных. метод фулл евентс. eventShortDtoList  = {}", eventShortDtoList);
 
         return eventShortDtoList;
