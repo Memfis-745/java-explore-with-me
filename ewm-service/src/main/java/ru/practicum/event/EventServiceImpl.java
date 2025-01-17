@@ -177,7 +177,7 @@ public class EventServiceImpl implements EventService {
 
       */
 
-        for (EventFullDto e:eventFullDtoList){
+        for (EventFullDto e : eventFullDtoList) {
             log.info("Отфильтрованных. СервисИмпл. Значение eventFullDtoList  = {}", e);
         }
 
