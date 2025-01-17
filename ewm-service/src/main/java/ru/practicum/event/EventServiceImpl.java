@@ -146,14 +146,15 @@ public class EventServiceImpl implements EventService {
         List<Long> users = params.getUsers();
         List<String> states = params.getStates();
 
-        List<Event> events = new ArrayList<>();
+        // List<Event> events = new ArrayList<>();
         Pageable page = PageRequest.of(params.getFrom() / params.getSize(), params.getSize());
+        Page<Event> events;
 
-        // if ((users == null) && (states == null) && (categories == null) && (start == null) && (end == null)) {
-        //    events = eventRepository.findAll();
-        // } else {
-        events = eventRepository.getAllEventParams(users, states, categories, start, end);
-        //   }
+        if ((users == null) && (states == null) && (categories == null) && (start == null) && (end == null)) {
+            events = eventRepository.findAll(page);
+        } else {
+            events = eventRepository.getAllEventParams(users, states, categories, start, end, page);
+        }
 
         // List<Event> events = eventRepository.getAllEventParams(users, states, categories, start, end);
         //  List<Event> eventsAll = eventRepository.findAll();
@@ -166,8 +167,8 @@ public class EventServiceImpl implements EventService {
         //  log.info("Отфильтрованных. СервисИмпл. Значение eventAll в методе сервис импл  = {}", eventsAll);
 
 
-        //List<EventFullDto> eventFullDtoList =  mapEventsToFullDtos(events.toList());
-        List<EventFullDto> eventFullDtoList = mapEventsToFullDtos(events);
+        List<EventFullDto> eventFullDtoList = mapEventsToFullDtos(events.toList());
+        //List<EventFullDto> eventFullDtoList = mapEventsToFullDtos(events);
         /*
         eventFullDtoList.stream()
                 .skip(params.getFrom())
@@ -176,8 +177,10 @@ public class EventServiceImpl implements EventService {
 
       */
 
+        for (EventFullDto e:eventFullDtoList){
+            log.info("Отфильтрованных. СервисИмпл. Значение eventFullDtoList  = {}", e);
+        }
 
-        //  log.info("Отфильтрованных. СервисИмпл. Значение eventFullDtoList в методе сервис импл  = {}", eventFullDtoList);
         return eventFullDtoList;
 
     }
@@ -326,18 +329,12 @@ public class EventServiceImpl implements EventService {
                         eventsRequests.getOrDefault(event.getId(), 0),
                         views.getOrDefault(event.getId(), 0L))
                 );
-
-
             }
         } else {
             for (Event event : events) {
                 eventShortDtoList.add(EventMapper.toFullDto(event, 0, 0L));
-
             }
         }
-        log.info("Отфильтрованных. метод фулл евентс. eventShortDtoList размер  = {}", eventShortDtoList.size());
-
-
         return eventShortDtoList;
     }
 
