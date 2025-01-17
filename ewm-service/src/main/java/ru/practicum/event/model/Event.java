@@ -38,8 +38,7 @@ public class Event {
     @Column(name = "description", nullable = false, length = 7000)
     private String description;
 
-
-    @Column(name = "event_date", nullable = false)
+    @Column(name = "event_date")
     private LocalDateTime eventDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
