@@ -30,12 +30,10 @@ import ru.practicum.user.model.User;
 
 import jakarta.servlet.http.HttpServletRequest;
 import ru.practicum.event.dto.*;
-
 import java.time.LocalDateTime;
 import java.util.*;
 
 import java.util.stream.Collectors;
-
 import static java.util.Objects.isNull;
 import static ru.practicum.exceptions.Constants.APP_NAME;
 import static ru.practicum.exceptions.Constants.DATE_FORMAT;
@@ -155,26 +153,7 @@ public class EventServiceImpl implements EventService {
             events = eventRepository.getAllEventParams(users, states, categories, start, end, page);
         }
 
-        // List<Event> events = eventRepository.getAllEventParams(users, states, categories, start, end);
-        //  List<Event> eventsAll = eventRepository.findAll();
-
-
-        log.info("Отфильтрованных. СервисИмпл. Значение from и ensized  на входе в репозиторий  = {}, {}", params.getFrom(), params.getSize());
-        //Page<Event> events = eventRepository.getAllEventParams(users, states, categories, start, end, page);
-
-        log.info("Отфильтрованных. СервисИмпл. Значение event в методе сервис импл  = {}", events);
-        //  log.info("Отфильтрованных. СервисИмпл. Значение eventAll в методе сервис импл  = {}", eventsAll);
-
-
         List<EventFullDto> eventFullDtoList = mapEventsToFullDtos(events.toList());
-        //List<EventFullDto> eventFullDtoList = mapEventsToFullDtos(events);
-        /*
-        eventFullDtoList.stream()
-                .skip(params.getFrom())
-                .limit(params.getSize())
-                .toList();
-
-      */
 
         for (EventFullDto e : eventFullDtoList) {
             log.info("Отфильтрованных. СервисИмпл. Значение eventFullDtoList  = {}", e);
@@ -230,9 +209,6 @@ public class EventServiceImpl implements EventService {
         Boolean paid = params.getPaid();
         State state = State.PUBLISHED;
 
-        log.info("Значение start и end  на входе в репозиторий  = {}, {}", start, end);
-
-
         if ((start != null) && (start.isAfter(end))) {
             throw new ConflictException("Дата окончания события не может быть раньше даты начала");
         }
@@ -246,16 +222,7 @@ public class EventServiceImpl implements EventService {
             events = eventRepository.getPublicEventsWithFilter(state, text, paid, start, end, page);
         }
 
-
-        log.info("Отфильтрованных. public. Значение event после репозитория = {}", events.getContent());
-
-        // Page<Event> events = eventRepository.getPublicEventsWithFilter(state, text, paid, start, end, page);
-
         List<EventShortDto> shortDtoList = mapEventsToShortDtos(events.toList());
-
-        for (EventShortDto e : shortDtoList) {
-            log.info("Отфильтрованных. СервисИмпл. Значение eventFullDtoList  = {}", e);
-        }
 
         if (Sort.valueOf(params.getSort().toUpperCase()).equals(Sort.EVENT_DATE)) {
             shortDtoList = shortDtoList.stream()
@@ -265,10 +232,6 @@ public class EventServiceImpl implements EventService {
             shortDtoList = shortDtoList.stream()
                     .sorted(Comparator.comparingLong(EventShortDto::getViews))
                     .collect(Collectors.toList());
-        }
-
-        for (EventShortDto e : shortDtoList) {
-            log.info("Отфильтрованных. СервисИмпл. Значение eventFullDtoList  = {}", e);
         }
 
         EndpointHitDto hitDto = new EndpointHitDto(null, APP_NAME, request.getRequestURI(), request.getRemoteAddr(),
@@ -331,15 +294,12 @@ public class EventServiceImpl implements EventService {
         List<Long> eventsIds = events.stream()
                 .map(Event::getId)
                 .collect(Collectors.toList());
-        log.info("Отфильтрованных. метод фулл евентс. Значение eventsIds  = {}", eventsIds);
         Optional<LocalDateTime> start = eventRepository.getMinPublishedDate(eventsIds);
 
         List<EventFullDto> eventShortDtoList = new ArrayList<>();
         if (start.isPresent()) {
             Map<Long, Long> views = getStatsForEvents(start.get(), eventsIds);
-            log.info("Отфильтрованных. метод фулл евентс. Значение просмотры  = {}", views);
             Map<Long, Integer> eventsRequests = getEventRequests(Status.CONFIRMED, eventsIds);
-            log.info("Отфильтрованных. метод фулл евентс. реквест  = {}", eventsRequests);
 
             for (Event event : events) {
 
@@ -364,14 +324,14 @@ public class EventServiceImpl implements EventService {
 
         List<ViewStatsDto> viewStatsDtoList = statsClient.getStats(start, LocalDateTime.now(), uries, true);
 
-        Map<Long, Long> veiws = new HashMap<>();
+        Map<Long, Long> views = new HashMap<>();
 
         for (ViewStatsDto veiwStatsDto : viewStatsDtoList) {
             String uri = veiwStatsDto.getUri();
             Long eventId = Long.parseLong(uri.substring(uri.lastIndexOf("/") + 1));
-            veiws.put(eventId, veiwStatsDto.getHits());
+            views.put(eventId, veiwStatsDto.getHits());
         }
-        return veiws;
+        return views;
     }
 
     private Map<Long, Integer> getEventRequests(Status status, List<Long> eventsIds) {
