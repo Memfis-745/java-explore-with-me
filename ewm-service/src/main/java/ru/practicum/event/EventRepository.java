@@ -4,7 +4,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.practicum.event.model.Event;
 
@@ -24,12 +23,11 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             AND (event.eventDate <= :rangeEnd)"""
     )
     Page<Event> getAllEventParams(
-            @Param("users") List<Long> users,
-            @Param("states") List<String> states,
-            @Param("categories") List<Long> categories,
-            @Param("rangeStart") LocalDateTime rangeStart,
-            @Param("rangeEnd") LocalDateTime rangeEnd, Pageable page);
-
+            List<Long> users,
+            List<String> states,
+            List<Long> categories,
+            LocalDateTime rangeStart,
+            LocalDateTime rangeEnd, Pageable page);
 
     @Query("""
             select event FROM Event event WHERE event.state= :state
@@ -39,11 +37,11 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             ORDER BY event.eventDate"""
     )
     Page<Event> getPublicEventsWithFilter(
-            @Param("state") State state,
-            @Param("text") String text,
-            @Param("paid") Boolean paid,
-            @Param("rangeStart") LocalDateTime rangeStart,
-            @Param("rangeEnd") LocalDateTime rangeEnd, Pageable page);
+            State state,
+            String text,
+            Boolean paid,
+            LocalDateTime rangeStart,
+            LocalDateTime rangeEnd, Pageable page);
 
     @Query("""
             select event FROM Event event WHERE event.state= :state
@@ -53,10 +51,10 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             ORDER BY event.eventDate"""
     )
     Page<Event> getPublicEventsWithDateNull(
-            @Param("state") State state,
-            @Param("text") String text,
-            @Param("paid") Boolean paid,
-            @Param("rangeStart") LocalDateTime rangeStart, Pageable page);
+            State state,
+            String text,
+            Boolean paid,
+            LocalDateTime rangeStart, Pageable page);
 
     @Query("select min(e.publishedOn) from Event as e where e.id in ?1")
     Optional<LocalDateTime> getMinPublishedDate(List<Long> eventsId);
