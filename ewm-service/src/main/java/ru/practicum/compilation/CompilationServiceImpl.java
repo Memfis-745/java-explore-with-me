@@ -48,8 +48,9 @@ public class CompilationServiceImpl implements CompilationService {
 
     @Override
     public void deleteCompilation(long compId) {
-        compilationRepository.findById(compId)
-                .orElseThrow(() -> new EntityNotFoundException("Подборки с ID: " + compId + " не найдено"));
+        if (compilationRepository.existsById(compId)) {
+            new EntityNotFoundException("Подборки с ID: " + compId + " не найдено");
+        }
         compilationRepository.deleteById(compId);
     }
 
@@ -82,11 +83,11 @@ public class CompilationServiceImpl implements CompilationService {
         Pageable page = PageRequest.of(from / size, size);
 
         List<Compilation> compilationList;
-        if (pinned != null) {
-            compilationList = compilationRepository.findAllByPinned(pinned, page).toList();
-        } else {
-            compilationList = compilationRepository.findAll(page).toList();
-        }
+        // if (pinned != null) {
+        compilationList = compilationRepository.findAllByPinned(pinned, page).toList();
+        //  } else {
+        //    compilationList = compilationRepository.findAll(page).toList();
+        // }
 
         Map<Compilation, Set<Long>> compMap = new HashMap<>();
         Set<Event> eventSet = new HashSet<>();
