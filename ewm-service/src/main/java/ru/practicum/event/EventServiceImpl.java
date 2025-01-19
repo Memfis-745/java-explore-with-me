@@ -30,12 +30,10 @@ import ru.practicum.user.model.User;
 
 import jakarta.servlet.http.HttpServletRequest;
 import ru.practicum.event.dto.*;
-
 import java.time.LocalDateTime;
 import java.util.*;
 
 import java.util.stream.Collectors;
-
 import static java.util.Objects.isNull;
 import static ru.practicum.exceptions.Constants.APP_NAME;
 import static ru.practicum.exceptions.Constants.DATE_FORMAT;
@@ -225,10 +223,6 @@ public class EventServiceImpl implements EventService {
         }
 
         List<EventShortDto> shortDtoList = mapEventsToShortDtos(events.toList());
-
-        for (EventShortDto e : shortDtoList) {
-            log.info("Отфильтрованных. СервисИмпл. Значение eventFullDtoList  = {}", e);
-        }
 
         if (Sort.valueOf(params.getSort().toUpperCase()).equals(Sort.EVENT_DATE)) {
             shortDtoList = shortDtoList.stream()
