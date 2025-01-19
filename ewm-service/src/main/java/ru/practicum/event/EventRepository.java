@@ -44,10 +44,10 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             LocalDateTime rangeEnd, Pageable page);
 
     @Query("""
-            select event FROM Event event WHERE event.state= :state
-            AND (:text IS NULL OR (LOWER(event.description) LIKE %:text%
-            OR LOWER(event.annotation) LIKE %:text%)) AND (:paid IS NULL
-            OR event.paid = :paid) AND (event.eventDate >= :rangeStart)
+            select event FROM Event event WHERE event.state= ?state
+            AND (?text IS NULL OR (LOWER(event.description) LIKE %?text%
+            OR LOWER(event.annotation) LIKE ?text%)) AND (?paid IS NULL
+            OR event.paid = ?paid) AND (event.eventDate >= ?rangeStart)
             ORDER BY event.eventDate"""
     )
     Page<Event> getPublicEventsWithDateNull(
