@@ -13,6 +13,6 @@ public interface CompilationRepository extends JpaRepository<Compilation, Long> 
             select c FROM Compilations c WHERE (:pinned IS NULL
             OR c.pinned IN :pinned)"""
     )
-    Page<Compilation> findAllByPinned(Boolean pinned, Pageable page);
+    Page<Compilation> findByPinned(Boolean pinned, Pageable page);
 }
 
