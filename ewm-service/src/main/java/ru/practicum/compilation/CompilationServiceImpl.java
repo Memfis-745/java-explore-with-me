@@ -83,11 +83,8 @@ public class CompilationServiceImpl implements CompilationService {
         Pageable page = PageRequest.of(from / size, size);
 
         List<Compilation> compilationList;
-        // if (pinned != null) {
+
         compilationList = compilationRepository.findByPinned(pinned, page).toList();
-        //  } else {
-        //    compilationList = compilationRepository.findAll(page).toList();
-        // }
 
         Map<Compilation, Set<Long>> compMap = new HashMap<>();
         Set<Event> eventSet = new HashSet<>();
