@@ -10,8 +10,8 @@ import ru.practicum.compilation.model.Compilation;
 @Repository
 public interface CompilationRepository extends JpaRepository<Compilation, Long> {
     @Query("""
-            select c FROM Compilations c WHERE (:pinned IS NULL
-            OR c.pinned IN :pinned)"""
+            select c FROM Compilation c WHERE (:pinned IS NULL
+            OR c.pinned = :pinned)"""
     )
     Page<Compilation> findByPinned(Boolean pinned, Pageable page);
 }
