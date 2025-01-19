@@ -49,7 +49,7 @@ public class CompilationServiceImpl implements CompilationService {
     @Override
     public void deleteCompilation(long compId) {
         if (compilationRepository.existsById(compId)) {
-            new EntityNotFoundException("Подборки с ID: " + compId + " не найдено");
+            throw new EntityNotFoundException("Подборки с ID: " + compId + " не найдено");
         }
         compilationRepository.deleteById(compId);
     }
