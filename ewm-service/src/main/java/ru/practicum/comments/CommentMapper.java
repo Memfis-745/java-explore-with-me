@@ -13,14 +13,16 @@ import ru.practicum.user.model.User;
 
 @Mapper(componentModel = "spring")
 public interface CommentMapper {
-
+    @Mapping(source = "comment.id", target = "id")
     @Mapping(target = "event", source = "eventDto")
     CommentShortDto commentToShortDto(Comment comment, EventShortDto eventDto);
 
+    @Mapping(source = "comment.id", target = "id")
     @Mapping(target = "author", source = "userDto")
     @Mapping(target = "event", source = "eventDto")
     CommentFullDto commentToFullDto(Comment comment, UserShortDto userDto, EventShortDto eventDto);
 
+    @Mapping(target = "id", ignore = true)
     @Mapping(target = "created", expression = "java(java.time.LocalDateTime.now())")
     @Mapping(source = "user", target = "author")
     @Mapping(source = "event", target = "event")
