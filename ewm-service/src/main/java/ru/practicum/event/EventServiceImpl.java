@@ -56,6 +56,7 @@ public class EventServiceImpl implements EventService {
     private final CommentRepository commentRepository;
 
 
+
     @Override
     public List<EventShortDto> getCurrentUserEvents(long userId, Integer from, Integer size) {
         checkUser(userId);

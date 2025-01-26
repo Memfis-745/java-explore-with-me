@@ -36,6 +36,8 @@ public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
     private final EventRepository eventRepository;
     private final EventService eventService;
+    private final CommentMapper commentMapper;
+
 
     @Transactional
     @Override
@@ -46,7 +48,7 @@ public class CommentServiceImpl implements CommentService {
         if (event.getPublishedOn() == null) {
             throw new ConflictException("Мероприятие с ID: " + eventId + ", не опуликовано");
         }
-        Comment comment = commentRepository.save(CommentMapper.dtoToComment(commentDto, user, event));
+        Comment comment = commentRepository.save(commentMapper.dtoToComment(commentDto, user, event));
 
         return commentToShortCommentDto(comment, event);
     }
@@ -84,7 +86,7 @@ public class CommentServiceImpl implements CommentService {
         Event event = getEventFromDb(eventId);
         EventShortDto eventShortDto = eventService.mapEventsToShortDtos(List.of(event)).get(0);
         return commentRepository.findByAuthorIdAndEventId(userId, eventId).stream()
-                .map(comment -> CommentMapper.commentToShortDto(comment, eventShortDto))
+                .map(comment -> commentMapper.commentToShortDto(comment, eventShortDto))
                 .collect(Collectors.toList());
     }
 
@@ -93,7 +95,7 @@ public class CommentServiceImpl implements CommentService {
         Comment comment = getCommentFromDb(commentId);
         UserShortDto userDto = UserMapper.userToShortDto(comment.getAuthor());
         EventShortDto eventShortDto = eventService.mapEventsToShortDtos(List.of(comment.getEvent())).get(0);
-        return CommentMapper.commentToFullDto(comment, userDto, eventShortDto);
+        return commentMapper.commentToFullDto(comment, userDto, eventShortDto);
     }
 
     @Override
@@ -120,7 +122,7 @@ public class CommentServiceImpl implements CommentService {
 
         List<CommentShortDto> commentsDtoList = new ArrayList<>();
         for (Comment comment : commentList) {
-            commentsDtoList.add(CommentMapper.commentToShortDto(comment, enentsShortMap.get(comment.getEvent().getId())));
+            commentsDtoList.add(commentMapper.commentToShortDto(comment, enentsShortMap.get(comment.getEvent().getId())));
         }
 
         return commentsDtoList;
@@ -151,7 +153,7 @@ public class CommentServiceImpl implements CommentService {
 
         List<CommentFullDto> commentFullDtos = new ArrayList<>();
         for (Comment comment : commentList) {
-            commentFullDtos.add(CommentMapper.commentToFullDto(comment,
+            commentFullDtos.add(commentMapper.commentToFullDto(comment,
                     usersMap.get(comment.getAuthor().getId()), eventShortDto));
         }
         return commentFullDtos;
@@ -168,7 +170,7 @@ public class CommentServiceImpl implements CommentService {
 
     private CommentShortDto commentToShortCommentDto(Comment comment, Event event) {
         EventShortDto eventShortDto = eventService.mapEventsToShortDtos(List.of(event)).get(0);
-        return CommentMapper.commentToShortDto(comment, eventShortDto);
+        return commentMapper.commentToShortDto(comment, eventShortDto);
     }
 
     private void checkUser(Long userId) {

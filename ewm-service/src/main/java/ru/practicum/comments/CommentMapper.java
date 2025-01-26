@@ -1,6 +1,7 @@
 package ru.practicum.comments;
 
-import lombok.experimental.UtilityClass;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import ru.practicum.comments.dto.CommentDto;
 import ru.practicum.comments.dto.CommentFullDto;
 import ru.practicum.comments.dto.CommentShortDto;
@@ -10,36 +11,20 @@ import ru.practicum.event.model.Event;
 import ru.practicum.user.dto.UserShortDto;
 import ru.practicum.user.model.User;
 
-import java.time.LocalDateTime;
+@Mapper(componentModel = "spring")
+public interface CommentMapper {
 
-@UtilityClass
-public class CommentMapper {
+    @Mapping(target = "event", source = "eventDto")
+    CommentShortDto commentToShortDto(Comment comment, EventShortDto eventDto);
 
-    public CommentShortDto commentToShortDto(Comment comment, EventShortDto eventDto) {
-        return CommentShortDto.builder()
-                .id(comment.getId())
-                .text(comment.getText())
-                .event(eventDto)
-                .created(comment.getCreated())
-                .build();
-    }
+    @Mapping(target = "author", source = "userDto")
+    @Mapping(target = "event", source = "eventDto")
+    CommentFullDto commentToFullDto(Comment comment, UserShortDto userDto, EventShortDto eventDto);
 
-    public Comment dtoToComment(CommentDto commentDto, User user, Event event) {
-        return Comment.builder()
-                .text(commentDto.getText())
-                .author(user)
-                .event(event)
-                .created(LocalDateTime.now())
-                .build();
-    }
+    @Mapping(target = "created", expression = "java(java.time.LocalDateTime.now())")
+    @Mapping(source = "user", target = "author")
+    @Mapping(source = "event", target = "event")
+    Comment dtoToComment(CommentDto commentDto, User user, Event event);
 
-    public CommentFullDto commentToFullDto(Comment comment, UserShortDto userDto, EventShortDto eventDto) {
-        return CommentFullDto.builder()
-                .id(comment.getId())
-                .text(comment.getText())
-                .author(userDto)
-                .event(eventDto)
-                .created(comment.getCreated())
-                .build();
-    }
+
 }
