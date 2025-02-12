@@ -72,8 +72,8 @@ public class PrivateEventController {
 
     @PatchMapping("/{eventId}/requests")
     public RequestStatusResult updateRequestsForOwnersEvent(@PathVariable long userId,
-                                                                      @PathVariable long eventId,
-                                                                      @RequestBody RequestStatusUpdate updateRequest) {
+                                                            @PathVariable long eventId,
+                                                            @RequestBody RequestStatusUpdate updateRequest) {
         log.info("В приватный метод patchRequestsForOwnersEvent передан запрос " +
                         "на обновление статуса заявки: userId = {}, eventId = {}, updateRequest = {}",
                 userId, eventId, updateRequest);

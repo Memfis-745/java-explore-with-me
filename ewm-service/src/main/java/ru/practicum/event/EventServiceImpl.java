@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.practicum.comments.CommentRepository;
 import ru.practicum.request.dto.RequestStatusResult;
 import ru.practicum.request.dto.RequestStatusUpdate;
 import ru.practicum.EndpointHitDto;
@@ -52,6 +53,8 @@ public class EventServiceImpl implements EventService {
     private final StatsClient statsClient;
     private final RequestRepository requestRepository;
     private final LocationRepository locationRepository;
+    private final CommentRepository commentRepository;
+
 
 
     @Override
@@ -160,9 +163,7 @@ public class EventServiceImpl implements EventService {
         for (EventFullDto e : eventFullDtoList) {
             log.info("Отфильтрованных. СервисИмпл. Значение eventFullDtoList  = {}", e);
         }
-
         return eventFullDtoList;
-
     }
 
     @Transactional
@@ -270,6 +271,12 @@ public class EventServiceImpl implements EventService {
 
         Optional<LocalDateTime> start = eventRepository.getMinPublishedDate(eventsIds);
 
+        Map<Long, Long> countEventComments = new HashMap<>();
+        List<Map<String, Long>> commentsQuantity = commentRepository.countCommentsForEvent(eventsIds);
+        for (Map<String, Long> longLongMap : commentsQuantity) {
+            countEventComments.put(longLongMap.get("eventId"), longLongMap.get("commentsQuantity"));
+        }
+
         List<EventShortDto> eventShortDtoList = new ArrayList<>();
         if (start.isPresent()) {
             Map<Long, Long> views = getStatsForEvents(start.get(), eventsIds);
@@ -279,7 +286,7 @@ public class EventServiceImpl implements EventService {
                         EventMapper.toShortDto(event,
                                 eventsRequests.getOrDefault(event.getId(), 0),
                                 views.getOrDefault(event.getId(), 0L),
-                                null)
+                                countEventComments.getOrDefault(event.getId(), 0L))
                 );
             }
         } else {
